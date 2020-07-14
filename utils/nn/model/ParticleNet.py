@@ -275,3 +275,51 @@ class ParticleNetTagger(nn.Module):
         features = torch.cat((self.pf_conv(pf_features * pf_mask) * pf_mask, self.sv_conv(sv_features * sv_mask) * sv_mask), dim=2)
         mask = torch.cat((pf_mask, sv_mask), dim=2)
         return self.pn(points, features, mask)
+
+
+class ParticleNetTaggerVBSPolar(nn.Module):
+
+    def __init__(self,
+                 pf_features_dims,
+                 # sv_features_dims,
+                 num_classes,
+                 conv_params=[(7, (32, 32, 32)), (7, (64, 64, 64))],
+                 fc_params=[(128, 0.1)],
+                 use_fusion=True,
+                 use_fts_bn=True,
+                 use_counts=True,
+                 pf_input_dropout=None,
+                 # sv_input_dropout=None,
+                 for_inference=False,
+                 **kwargs):
+        super(ParticleNetTaggerVBSPolar, self).__init__(**kwargs)
+        self.pf_input_dropout = nn.Dropout(pf_input_dropout) if pf_input_dropout else None
+        # self.sv_input_dropout = nn.Dropout(sv_input_dropout) if sv_input_dropout else None
+        self.pf_conv = FeatureConv(pf_features_dims, 32)
+        # self.sv_conv = FeatureConv(sv_features_dims, 32)
+        self.pn = ParticleNet(input_dims=32,
+                              num_classes=num_classes,
+                              conv_params=conv_params,
+                              fc_params=fc_params,
+                              use_fusion=use_fusion,
+                              use_fts_bn=use_fts_bn,
+                              use_counts=use_counts,
+                              for_inference=for_inference)
+
+    def forward(self, pf1_points, pf1_features, pf1_mask, pf2_points, pf2_features, pf2_mask):
+        if self.pf_input_dropout:
+            pf1_mask = (self.pf_input_dropout(pf1_mask) != 0).float()
+            pf1_points *= pf1_mask
+            pf1_features *= pf1_mask
+            pf2_mask = (self.pf_input_dropout(pf2_mask) != 0).float()
+            pf2_points *= pf2_mask
+            pf2_features *= pf2_mask
+        # if self.sv_input_dropout:
+        #     sv_mask = (self.sv_input_dropout(sv_mask) != 0).float()
+        #     sv_points *= sv_mask
+        #     sv_features *= sv_mask
+
+        points = torch.cat((pf1_points, pf2_points), dim=2)
+        features = torch.cat((self.pf_conv(pf1_features) * pf1_mask, self.pf_conv(pf2_features) * pf2_mask), dim=2)
+        mask = torch.cat((pf1_mask, pf2_mask), dim=2)
+        return self.pn(points, features, mask)
