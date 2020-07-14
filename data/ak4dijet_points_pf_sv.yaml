@@ -212,4 +212,4 @@ observers:
 #       ]
 #    reweight_hists:
 
-treename: tree
+treename: deepntuplizer/tree
