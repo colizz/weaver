@@ -29,7 +29,7 @@ new_variables:
    # sv_mask: awkward.JaggedArray.ones_like(sv_etarel)
    
    Jet2PFCands_pt_log: np.log(Jet2PFCands_pt)
-   Jet2PFCands_phirel: "Jet2PFCands_phi - jet1_phi - 2*np.pi*np.floor((Jet2PFCands_phi - jet1_phi) / (2*np.pi) + 0.5)"
+   Jet2PFCands_phirel: "Jet2PFCands_phi - jet2_phi - 2*np.pi*np.floor((Jet2PFCands_phi - jet2_phi) / (2*np.pi) + 0.5)"
    Jet2PFCands_etarel: "np.sign(jet1_eta) * (Jet2PFCands_eta - jet1_eta)"
    Jet2PFCands_abseta: np.abs(Jet2PFCands_eta)
    Jet2PFCands_isEl: "np.abs(Jet2PFCands_pdgId) == 11"
