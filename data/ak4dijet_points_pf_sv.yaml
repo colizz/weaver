@@ -31,11 +31,11 @@ inputs:
    pf1_features:
       length: 40
       vars: 
-         - [Jet1PFCands_pt_log, 1, 1]
-         - [Jet1PFCands_e_log, 1.3, 1]
+         - [Jet1PFCands_pt_log, 1, 0.5]
+         - [Jet1PFCands_e_log, 1.3, 0.5]
          - Jet1PFCands_etarel
          - Jet1PFCands_phirel
-         - [Jet1PFCands_abseta, 0.6, 1.6]
+         - [Jet1PFCands_abseta, 2, 1.6]
          - Jet1PFCands_charge
          - Jet1PFCands_isEl
          - Jet1PFCands_isMu
@@ -68,11 +68,11 @@ inputs:
    pf2_features:
       length: 40
       vars: 
-         - [Jet2PFCands_pt_log, 1, 1]
-         - [Jet2PFCands_e_log, 1.3, 1]
+         - [Jet2PFCands_pt_log, 1, 0.5]
+         - [Jet2PFCands_e_log, 1.3, 0.5]
          - Jet2PFCands_etarel
          - Jet2PFCands_phirel
-         - [Jet2PFCands_abseta, 0.6, 1.6]
+         - [Jet2PFCands_abseta, 2, 1.6]
          - Jet2PFCands_charge
          - Jet2PFCands_isEl
          - Jet2PFCands_isMu
@@ -109,7 +109,7 @@ inputs:
    #       - [Jet1SV_mass, 1.2, 0.3]
    #       - Jet1SVsAK4_etarel
    #       - Jet1SVsAK4_phirel
-   #       - [Jet1SVsAK4_abseta, 0.5, 1.6]
+   #       - [Jet1SVsAK4_abseta, 2, 1.6]
    #       - [Jet1SVsAK4_ntracks, 3, 1]
    #       - [Jet1SVsAK4_normchi2, 0.8, 0.6]
    #       - [Jet1SVsAK4_dxy, 0.4, 0.25]
@@ -132,7 +132,7 @@ inputs:
    #       - [Jet2SV_mass, 1.2, 0.3]
    #       - Jet2SVsAK4_etarel
    #       - Jet2SVsAK4_phirel
-   #       - [Jet2SVsAK4_abseta, 0.5, 1.6]
+   #       - [Jet2SVsAK4_abseta, 2, 1.6]
    #       - [Jet2SVsAK4_ntracks, 3, 1]
    #       - [Jet2SVsAK4_normchi2, 0.8, 0.6]
    #       - [Jet2SVsAK4_dxy, 0.4, 0.25]
