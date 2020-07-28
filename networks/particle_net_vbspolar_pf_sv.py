@@ -18,17 +18,17 @@ def get_model(data_config, **kwargs):
     use_fusion = True
 
     pf_features_dims = len(data_config.input_dicts['pf1_features'])
-    # sv_features_dims = len(data_config.input_dicts['sv_features'])
+    sv_features_dims = len(data_config.input_dicts['sv1_features'])
     num_classes = len(data_config.label_value)
     model = ParticleNetTaggerVBSPolar(pf_features_dims, 
-                              # sv_features_dims,
+                              sv_features_dims,
                               num_classes,
                               conv_params, fc_params,
                               use_fusion=use_fusion,
                               use_fts_bn=kwargs.get('use_fts_bn', False),
                               use_counts=kwargs.get('use_counts', True),
                               pf_input_dropout=kwargs.get('pf_input_dropout', None),
-                              # sv_input_dropout=kwargs.get('sv_input_dropout', None),
+                              sv_input_dropout=kwargs.get('sv_input_dropout', None),
                               for_inference=kwargs.get('for_inference', False)
                               )
     model.apply(weight_init)
