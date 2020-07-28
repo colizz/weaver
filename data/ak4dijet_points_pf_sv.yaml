@@ -11,9 +11,9 @@ new_variables:
    ### [format] name: formula
    ### can use functions from `math`, `np` (numpy), and `awkward` in the expression
    pfcand1_mask: awkward.JaggedArray.ones_like(Jet1PFCands_pt)
-   # sv1_mask: awkward.JaggedArray.ones_like(Jet1SVsAK4_etarel)
+   sv1_mask: awkward.JaggedArray.ones_like(Jet1SVsAK4_etarel)
    pfcand2_mask: awkward.JaggedArray.ones_like(Jet2PFCands_pt)
-   # sv2_mask: awkward.JaggedArray.ones_like(Jet2SVsAK4_etarel)
+   sv2_mask: awkward.JaggedArray.ones_like(Jet2SVsAK4_etarel)
 
 preprocess:
   ### method: [manual, auto] - whether to use manually specified parameters for variable standardization
@@ -97,52 +97,52 @@ inputs:
       length: 40
       vars: 
          - pfcand2_mask
-   # sv1_points:
-   #    length: 10
-   #    vars:
-   #       - Jet1SVsAK4_etarel
-   #       - Jet1SVsAK4_phirel
-   # sv1_features:
-   #    length: 10
-   #    vars:
-   #       - [Jet1SVsAK4_pt_log, 4, 0.6]
-   #       - [Jet1SV_mass, 1.2, 0.3]
-   #       - Jet1SVsAK4_etarel
-   #       - Jet1SVsAK4_phirel
-   #       - [Jet1SVsAK4_abseta, 2, 1.6]
-   #       - [Jet1SVsAK4_ntracks, 3, 1]
-   #       - [Jet1SVsAK4_normchi2, 0.8, 0.6]
-   #       - [Jet1SVsAK4_dxy, 0.4, 0.25]
-   #       - [Jet1SVsAK4_dxysig, 7, 0.02]
-   #       - [Jet1SVsAK4_d3d, 0.5, 0.2]
-   #       - [Jet1SVsAK4_d3dsig, 7, 0.02]
-   # sv1_mask:
-   #    length: 10
-   #    vars:
-   #       - sv1_mask
-   # sv2_points:
-   #    length: 10
-   #    vars:
-   #       - Jet2SVsAK4_etarel
-   #       - Jet2SVsAK4_phirel
-   # sv2_features:
-   #    length: 10
-   #    vars:
-   #       - [Jet2SVsAK4_pt_log, 4, 0.6]
-   #       - [Jet2SV_mass, 1.2, 0.3]
-   #       - Jet2SVsAK4_etarel
-   #       - Jet2SVsAK4_phirel
-   #       - [Jet2SVsAK4_abseta, 2, 1.6]
-   #       - [Jet2SVsAK4_ntracks, 3, 1]
-   #       - [Jet2SVsAK4_normchi2, 0.8, 0.6]
-   #       - [Jet2SVsAK4_dxy, 0.4, 0.25]
-   #       - [Jet2SVsAK4_dxysig, 7, 0.02]
-   #       - [Jet2SVsAK4_d3d, 0.5, 0.2]
-   #       - [Jet2SVsAK4_d3dsig, 7, 0.02]
-   # sv2_mask:
-   #    length: 10
-   #    vars:
-   #       - sv2_mask
+   sv1_points:
+      length: 5
+      vars:
+         - Jet1SVsAK4_etarel
+         - Jet1SVsAK4_phirel
+   sv1_features:
+      length: 5
+      vars:
+         - [Jet1SVsAK4_pt_log, 4, 0.6]
+         - [Jet1SVsAK4_mass, 1.2, 0.3]
+         - Jet1SVsAK4_etarel
+         - Jet1SVsAK4_phirel
+         - [Jet1SVsAK4_abseta, 2, 1.6]
+         - [Jet1SVsAK4_ntracks, 3, 1]
+         - [Jet1SVsAK4_normchi2, 0.8, 0.6]
+         - [Jet1SVsAK4_dxy, 0.4, 0.25]
+         - [Jet1SVsAK4_dxysig, 7, 0.02]
+         - [Jet1SVsAK4_d3d, 0.5, 0.2]
+         - [Jet1SVsAK4_d3dsig, 7, 0.02]
+   sv1_mask:
+      length: 5
+      vars:
+         - sv1_mask
+   sv2_points:
+      length: 5
+      vars:
+         - Jet2SVsAK4_etarel
+         - Jet2SVsAK4_phirel
+   sv2_features:
+      length: 5
+      vars:
+         - [Jet2SVsAK4_pt_log, 4, 0.6]
+         - [Jet2SVsAK4_mass, 1.2, 0.3]
+         - Jet2SVsAK4_etarel
+         - Jet2SVsAK4_phirel
+         - [Jet2SVsAK4_abseta, 2, 1.6]
+         - [Jet2SVsAK4_ntracks, 3, 1]
+         - [Jet2SVsAK4_normchi2, 0.8, 0.6]
+         - [Jet2SVsAK4_dxy, 0.4, 0.25]
+         - [Jet2SVsAK4_dxysig, 7, 0.02]
+         - [Jet2SVsAK4_d3d, 0.5, 0.2]
+         - [Jet2SVsAK4_d3dsig, 7, 0.02]
+   sv2_mask:
+      length: 5
+      vars:
+         - sv2_mask
 
 labels:
    ### type can be `simple`, `custom`
@@ -157,6 +157,9 @@ labels:
       # target_mass: np.where(fj_isQCD, fj_genjet_sdmass, fj_gen_mass) 
 
 observers:
+   - run
+   - luminosityBlock
+   - event
    - is_ll
    - is_tl
    - is_tt
