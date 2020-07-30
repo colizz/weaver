@@ -5,7 +5,7 @@ selection:
 
 test_time_selection:
    ### selection to apply at test time (i.e., when running w/ --predict)
-   (event_no%7==0)
+   (1==1)
 
 new_variables:
    ### [format] name: formula
