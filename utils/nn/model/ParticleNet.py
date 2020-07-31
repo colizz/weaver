@@ -323,6 +323,6 @@ class ParticleNetTaggerVBSPolar(nn.Module):
             sv2_features *= sv2_mask
 
         points = torch.cat((pf1_points, pf2_points, sv1_points, sv2_points), dim=2)
-        features = torch.cat((self.pf_conv(pf1_features) * pf1_mask, self.pf_conv(pf2_features) * pf2_mask, self.sv_conv(sv1_features) * sv1_mask, self.sv_conv(sv2_features) * sv2_mask), dim=2)
+        features = torch.cat((self.pf_conv(pf1_features * pf1_mask) * pf1_mask, self.pf_conv(pf2_features * pf2_mask) * pf2_mask, self.sv_conv(sv1_features * sv1_mask) * sv1_mask, self.sv_conv(sv2_features * sv2_mask) * sv2_mask), dim=2)
         mask = torch.cat((pf1_mask, pf2_mask, sv1_mask, sv2_mask), dim=2)
         return self.pn(points, features, mask)
