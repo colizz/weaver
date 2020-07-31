@@ -164,21 +164,5 @@ observers:
    - is_tl
    - is_tt
    - event_no
-   - lep1_pt
-   - lep1_eta
-   - lep1_phi
-   - lep2_pt
-   - lep2_eta
-   - lep2_phi
-   - jet1_pt
-   - jet1_eta
-   - jet1_phi
-   - jet1_m
-   - jet2_pt
-   - jet2_eta
-   - jet2_phi
-   - jet2_m
-   - met
-   - met_phi
 
 treename: deepntuplizer/tree
