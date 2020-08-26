@@ -53,6 +53,8 @@ def train(model, loss_func, opt, scheduler, train_loader, dev, use_amp=False):
             label = _flatten_label(label, label_mask)
             num_examples = label.shape[0]
             label_counter.update(label.cpu().numpy())
+            if isinstance(loss_func, torch.nn.modules.loss.BCELoss):
+                label = label.type('torch.FloatTensor')
             label = label.to(dev)
             opt.zero_grad()
             logits = model(*inputs)
@@ -65,12 +67,15 @@ def train(model, loss_func, opt, scheduler, train_loader, dev, use_amp=False):
                 loss.backward()
             opt.step()
 
-            _, preds = logits.max(1)
+            if isinstance(loss_func, torch.nn.modules.loss.BCELoss):
+                correct = (abs(logits.view(-1) - label) < 0.5).sum().item()
+            else:
+                _, preds = logits.max(1)
+                correct = (preds == label).sum().item()
             loss = loss.item()
 
             num_batches += 1
             count += num_examples
-            correct = (preds == label).sum().item()
             total_loss += loss
             total_correct += correct
 
@@ -113,22 +118,30 @@ def evaluate(model, test_loader, dev, for_training=True, loss_func=None, eval_me
                 label = _flatten_label(label, label_mask)
                 num_examples = label.shape[0]
                 label_counter.update(label.cpu().numpy())
+                if isinstance(loss_func, torch.nn.modules.loss.BCELoss):
+                    label = label.type('torch.FloatTensor')
                 label = label.to(dev)
                 logits = model(*inputs)
                 logits = _flatten_preds(logits, label_mask)
 
-                scores.append(torch.softmax(logits, dim=1).cpu().detach().numpy())
+                if logits.ndim > 1:
+                    scores.append(torch.softmax(logits, dim=1).cpu().detach().numpy())
+                else:
+                    scores.append(torch.stack((1-logits, logits), dim=1).cpu().detach().numpy())
                 for k, v in y.items():
                     labels[k].append(_flatten_label(v, label_mask).cpu().numpy())
                 if not for_training:
                     for k, v in Z.items():
                         observers[k].append(v.cpu().numpy())
 
-                _, preds = logits.max(1)
+                if isinstance(loss_func, torch.nn.modules.loss.BCELoss):
+                    correct = (abs(logits.view(-1) - label) < 0.5).sum().item()
+                else:
+                    _, preds = logits.max(1)
+                    correct = (preds == label).sum().item()
                 loss = 0 if loss_func is None else loss_func(logits, label).item()
 
                 count += num_examples
-                correct = (preds == label).sum().item()
                 total_loss += loss * num_examples
                 total_correct += correct
 
