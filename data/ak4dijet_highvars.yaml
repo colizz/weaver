@@ -1,0 +1,62 @@
+selection:
+   ### use `&`, `|`, `~` for logical operations on numpy arrays
+   ### can use functions from `math`, `np` (numpy), and `awkward` in the expression
+   (event_no%7!=0)
+
+test_time_selection:
+   ### selection to apply at test time (i.e., when running w/ --predict)
+   (event_no%1==0)
+
+new_variables:
+   ### [format] name: formula
+   ### can use functions from `math`, `np` (numpy), and `awkward` in the expression
+
+preprocess:
+  ### method: [manual, auto] - whether to use manually specified parameters for variable standardization
+  ### [note]: `[var]_mask` will not be transformed even if `method=auto`
+  method: manual
+  ### data_fraction: fraction of events to use when calculating the mean/scale for the standardization
+  data_fraction: 
+
+inputs:
+   highvars:
+      length: None
+      vars: 
+         - [ssww_leppt1_jetpt30_dphijj, 0, 1]
+         - [ssww_leppt1_jetpt30_Jet_pt1, 500, 0.01]
+         - [ssww_leppt1_jetpt30_Jet_pt2, 500, 0.01]
+         - [ssww_leppt1_jetpt30_Lepton_pt1, 500, 0.01]
+         - [ssww_leppt1_jetpt30_Lepton_pt2, 500, 0.01]
+         - [ssww_leppt1_jetpt30_dphill, 0, 1]
+         - [ssww_leppt1_jetpt30_mll, 500, 0.01]
+         - [ssww_leppt1_jetpt30_met, 500, 0.01]
+         - [ssww_leppt1_jetpt30_ptll, 500, 0.01]
+         - [ssww_leppt1_jetpt30_mTi, 500, 0.01]
+         - [ssww_leppt1_jetpt30_zlep1, 1, 5]
+         - [ssww_leppt1_jetpt30_Zlep2, 1, 5]
+         - [ssww_leppt1_jetpt30_drj1ll, 5, 1]
+         - [ssww_leppt1_jetpt30_drj2ll, 5, 1]
+         - [ssww_leppt1_jetpt30_pt_ratio, 2.5, 2]
+
+labels:
+   ### type can be `simple`, `custom`
+   ### [option 1] use `simple` for binary/multi-class classification, then `value` is a list of 0-1 labels
+   type: simple
+   value: [
+      is_ll, isnot_ll
+      ]
+   ### [option 2] otherwise use `custom` to define the label, then `value` is a map
+   # type: custom
+   # value: 
+      # target_mass: np.where(fj_isQCD, fj_genjet_sdmass, fj_gen_mass) 
+
+observers:
+   - run
+   - luminosityBlock
+   - event
+   - is_ll
+   - is_tl
+   - is_tt
+   - event_no
+
+treename: deepntuplizer/tree
