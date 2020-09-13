@@ -1,0 +1,91 @@
+selection:
+   ### use `&`, `|`, `~` for logical operations on numpy arrays
+   ### can use functions from `math`, `np` (numpy), and `awkward` in the expression
+   (event_no%7!=0)
+
+test_time_selection:
+   ### selection to apply at test time (i.e., when running w/ --predict)
+   (event_no%1==0)
+
+new_variables:
+   ### [format] name: formula
+   ### can use functions from `math`, `np` (numpy), and `awkward` in the expression
+   dummy_00: np.stack([np.zeros_like(ssww_leppt1_jetpt30_dphijj), np.zeros_like(ssww_leppt1_jetpt30_dphijj)], axis=1)
+   dummy_01: np.stack([np.zeros_like(ssww_leppt1_jetpt30_dphijj), np.ones_like(ssww_leppt1_jetpt30_dphijj)], axis=1)
+   dummy_11: np.stack([np.ones_like(ssww_leppt1_jetpt30_dphijj), np.ones_like(ssww_leppt1_jetpt30_dphijj)], axis=1)
+
+   ### high-level inputs
+   dphijj_stack: np.stack([ssww_leppt1_jetpt30_dphijj, ssww_leppt1_jetpt30_dphijj], axis=1)
+   Jet_pt1_stack: np.stack([ssww_leppt1_jetpt30_Jet_pt1, ssww_leppt1_jetpt30_Jet_pt1], axis=1)
+   Jet_pt2_stack: np.stack([ssww_leppt1_jetpt30_Jet_pt2, ssww_leppt1_jetpt30_Jet_pt2], axis=1)
+   Lepton_pt1_stack: np.stack([ssww_leppt1_jetpt30_Lepton_pt1, ssww_leppt1_jetpt30_Lepton_pt1], axis=1)
+   Lepton_pt2_stack: np.stack([ssww_leppt1_jetpt30_Lepton_pt2, ssww_leppt1_jetpt30_Lepton_pt2], axis=1)
+   dphill_stack: np.stack([ssww_leppt1_jetpt30_dphill, ssww_leppt1_jetpt30_dphill], axis=1)
+   mll_stack: np.stack([ssww_leppt1_jetpt30_mll, ssww_leppt1_jetpt30_mll], axis=1)
+   met_stack: np.stack([ssww_leppt1_jetpt30_met, ssww_leppt1_jetpt30_met], axis=1)
+   ptll_stack: np.stack([ssww_leppt1_jetpt30_ptll, ssww_leppt1_jetpt30_ptll], axis=1)
+   mTi_stack: np.stack([ssww_leppt1_jetpt30_mTi, ssww_leppt1_jetpt30_mTi], axis=1)
+   zlep1_stack: np.stack([ssww_leppt1_jetpt30_zlep1, ssww_leppt1_jetpt30_zlep1], axis=1)
+   Zlep2_stack: np.stack([ssww_leppt1_jetpt30_Zlep2, ssww_leppt1_jetpt30_Zlep2], axis=1)
+   drj1ll_stack: np.stack([ssww_leppt1_jetpt30_drj1ll, ssww_leppt1_jetpt30_drj1ll], axis=1)
+   drj2ll_stack: np.stack([ssww_leppt1_jetpt30_drj2ll, ssww_leppt1_jetpt30_drj2ll], axis=1)
+   pt_ratio_stack: np.stack([ssww_leppt1_jetpt30_pt_ratio, ssww_leppt1_jetpt30_pt_ratio], axis=1)
+
+preprocess:
+  ### method: [manual, auto] - whether to use manually specified parameters for variable standardization
+  ### [note]: `[var]_mask` will not be transformed even if `method=auto`
+  method: manual
+  ### data_fraction: fraction of events to use when calculating the mean/scale for the standardization
+  data_fraction: 
+
+inputs:
+   dummy_points:
+      length: 2
+      vars: 
+         - dummy_01
+         - dummy_00
+   dummy_features:
+      length: 2
+      vars: 
+         - [dphijj_stack, 0, 1]
+         - [Jet_pt1_stack, 500, 0.01]
+         - [Jet_pt2_stack, 500, 0.01]
+         - [Lepton_pt1_stack, 500, 0.01]
+         - [Lepton_pt2_stack, 500, 0.01]
+         - [dphill_stack, 0, 1]
+         - [mll_stack, 500, 0.01]
+         - [met_stack, 500, 0.01]
+         - [ptll_stack, 500, 0.01]
+         - [mTi_stack, 500, 0.01]
+         - [zlep1_stack, 1, 5]
+         - [Zlep2_stack, 1, 5]
+         - [drj1ll_stack, 5, 1]
+         - [drj2ll_stack, 5, 1]
+         - [pt_ratio_stack, 2.5, 2]
+   dummy_mask:
+      length: 2
+      vars: 
+         - dummy_11
+
+labels:
+   ### type can be `simple`, `custom`
+   ### [option 1] use `simple` for binary/multi-class classification, then `value` is a list of 0-1 labels
+   type: simple
+   value: [
+      is_ll, isnot_ll
+      ]
+   ### [option 2] otherwise use `custom` to define the label, then `value` is a map
+   # type: custom
+   # value: 
+      # target_mass: np.where(fj_isQCD, fj_genjet_sdmass, fj_gen_mass) 
+
+observers:
+   - run
+   - luminosityBlock
+   - event
+   - is_ll
+   - is_tl
+   - is_tt
+   - event_no
+
+treename: deepntuplizer/tree

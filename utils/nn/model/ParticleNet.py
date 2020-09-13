@@ -334,6 +334,33 @@ class ParticleNetTaggerVBSPolar(nn.Module):
         mask = torch.cat((pf1_mask, pf2_mask, sv1_mask, sv2_mask), dim=2)
         return self.pn(points, features, mask)
 
+class ParticleNetTaggerVBSPolar_dummy(nn.Module):
+
+    def __init__(self,
+                 dummy_features_dims,
+                 num_classes,
+                 conv_params=[(7, (32, 32, 32)), (7, (64, 64, 64))],
+                 fc_params=[(128, 0.1)],
+                 use_fusion=True,
+                 use_fts_bn=True,
+                 use_counts=True,
+                 for_inference=False,
+                 **kwargs):
+        super(ParticleNetTaggerVBSPolar_dummy, self).__init__(**kwargs)
+        self.dm_conv = FeatureConv(dummy_features_dims, 32)
+        self.pn = ParticleNet(input_dims=32,
+                              num_classes=num_classes,
+                              conv_params=conv_params,
+                              fc_params=fc_params,
+                              use_fusion=use_fusion,
+                              use_fts_bn=use_fts_bn,
+                              use_counts=use_counts,
+                              for_inference=for_inference)
+
+    def forward(self, dm_points, dm_features, dm_mask):
+        features = self.dm_conv(dm_features * dm_mask) * dm_mask
+        return self.pn(dm_points, features, dm_mask)
+
 class ParticleNetTaggerVBSPolar_addJetLep(nn.Module):
 
     def __init__(self,
