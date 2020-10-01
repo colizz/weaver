@@ -1,0 +1,296 @@
+selection:
+   ### use `&`, `|`, `~` for logical operations on numpy arrays
+   ### can use functions from `math`, `np` (numpy), and `awkward` in the expression
+   (event_no%7!=0)
+
+test_time_selection:
+   ### selection to apply at test time (i.e., when running w/ --predict)
+   (event_no%1==0)
+
+new_variables:
+   ### [format] name: formula
+   ### can use functions from `math`, `np` (numpy), and `awkward` in the expression
+   pfcand1_mask: awkward.JaggedArray.ones_like(Jet1PFCands_pt)
+   sv1_mask: awkward.JaggedArray.ones_like(Jet1SVsAK4_etarel)
+   pfcand2_mask: awkward.JaggedArray.ones_like(Jet2PFCands_pt)
+   sv2_mask: awkward.JaggedArray.ones_like(Jet2SVsAK4_etarel)
+   pfcand3_mask: awkward.JaggedArray.ones_like(Jet3PFCands_pt)
+   sv3_mask: awkward.JaggedArray.ones_like(Jet3SVsAK4_etarel)
+
+preprocess:
+  ### method: [manual, auto] - whether to use manually specified parameters for variable standardization
+  ### [note]: `[var]_mask` will not be transformed even if `method=auto`
+  method: manual
+  ### data_fraction: fraction of events to use when calculating the mean/scale for the standardization
+  data_fraction: 
+
+inputs:
+   pf1_points:
+      length: 40
+      vars: 
+         - Jet1PFCands_eta
+         - Jet1PFCands_phi
+   pf1_features:
+      length: 40
+      vars: 
+         - [Jet1PFCands_pt_log, 1, 0.5]
+         - [Jet1PFCands_e_log, 1.3, 0.5]
+         - Jet1PFCands_eta
+         - Jet1PFCands_phi
+         - [Jet1PFCands_abseta, 2, 1.6]
+         - Jet1PFCands_charge
+         - Jet1PFCands_isEl
+         - Jet1PFCands_isMu
+         - Jet1PFCands_isGamma
+         - Jet1PFCands_isChargedHad
+         - Jet1PFCands_isNeutralHad
+         - [Jet1PFCands_pvAssocQuality, 4, 0.3]
+         - Jet1PFCands_lostInnerHits
+         - [Jet1PFCands_trkChi2, 5, 0.2]
+         - [Jet1PFCands_trkQuality, 0, 0.2]
+         - [Jet1PFCands_dz, 0, 180]
+         - [Jet1PFCands_dzSig, 0, 0.9]
+         - [Jet1PFCands_d0, 0.0, 300]
+         - [Jet1PFCands_d0Sig, 0, 1.0]
+         - [Jet1PFCandsAK4_btagEtaRel, 1.5, 0.5]
+         - [Jet1PFCandsAK4_btagPtRatio, 0, 1]
+         - [Jet1PFCandsAK4_btagPParRatio, 0, 1]
+         - [Jet1PFCandsAK4_btagSip3dVal, 0, 100]
+         - [Jet1PFCandsAK4_btagSip3dSig, 0, 0.5]
+         - [Jet1PFCandsAK4_btagJetDistVal, 0, 40]
+   pf1_mask:
+      length: 40
+      vars: 
+         - pfcand1_mask
+   pf2_points:
+      length: 40
+      vars: 
+         - Jet2PFCands_eta
+         - Jet2PFCands_phi
+   pf2_features:
+      length: 40
+      vars: 
+         - [Jet2PFCands_pt_log, 1, 0.5]
+         - [Jet2PFCands_e_log, 1.3, 0.5]
+         - Jet2PFCands_eta
+         - Jet2PFCands_phi
+         - [Jet2PFCands_abseta, 2, 1.6]
+         - Jet2PFCands_charge
+         - Jet2PFCands_isEl
+         - Jet2PFCands_isMu
+         - Jet2PFCands_isGamma
+         - Jet2PFCands_isChargedHad
+         - Jet2PFCands_isNeutralHad
+         - [Jet2PFCands_pvAssocQuality, 4, 0.3]
+         - Jet2PFCands_lostInnerHits
+         - [Jet2PFCands_trkChi2, 5, 0.2]
+         - [Jet2PFCands_trkQuality, 0, 0.2]
+         - [Jet2PFCands_dz, 0, 180]
+         - [Jet2PFCands_dzSig, 0, 0.9]
+         - [Jet2PFCands_d0, 0.0, 300]
+         - [Jet2PFCands_d0Sig, 0, 1.0]
+         - [Jet2PFCandsAK4_btagEtaRel, 1.5, 0.5]
+         - [Jet2PFCandsAK4_btagPtRatio, 0, 1]
+         - [Jet2PFCandsAK4_btagPParRatio, 0, 1]
+         - [Jet2PFCandsAK4_btagSip3dVal, 0, 100]
+         - [Jet2PFCandsAK4_btagSip3dSig, 0, 0.5]
+         - [Jet2PFCandsAK4_btagJetDistVal, 0, 40]
+   pf2_mask:
+      length: 40
+      vars: 
+         - pfcand2_mask
+   pf3_points:
+      length: 40
+      vars: 
+         - Jet3PFCands_eta
+         - Jet3PFCands_phi
+   pf3_features:
+      length: 40
+      vars: 
+         - [Jet3PFCands_pt_log, 1, 0.5]
+         - [Jet3PFCands_e_log, 1.3, 0.5]
+         - Jet3PFCands_eta
+         - Jet3PFCands_phi
+         - [Jet3PFCands_abseta, 2, 1.6]
+         - Jet3PFCands_charge
+         - Jet3PFCands_isEl
+         - Jet3PFCands_isMu
+         - Jet3PFCands_isGamma
+         - Jet3PFCands_isChargedHad
+         - Jet3PFCands_isNeutralHad
+         - [Jet3PFCands_pvAssocQuality, 4, 0.3]
+         - Jet3PFCands_lostInnerHits
+         - [Jet3PFCands_trkChi2, 5, 0.2]
+         - [Jet3PFCands_trkQuality, 0, 0.2]
+         - [Jet3PFCands_dz, 0, 180]
+         - [Jet3PFCands_dzSig, 0, 0.9]
+         - [Jet3PFCands_d0, 0.0, 300]
+         - [Jet3PFCands_d0Sig, 0, 1.0]
+         - [Jet3PFCandsAK4_btagEtaRel, 1.5, 0.5]
+         - [Jet3PFCandsAK4_btagPtRatio, 0, 1]
+         - [Jet3PFCandsAK4_btagPParRatio, 0, 1]
+         - [Jet3PFCandsAK4_btagSip3dVal, 0, 100]
+         - [Jet3PFCandsAK4_btagSip3dSig, 0, 0.5]
+         - [Jet3PFCandsAK4_btagJetDistVal, 0, 40]
+   pf3_mask:
+      length: 40
+      vars: 
+         - pfcand3_mask
+   sv1_points:
+      length: 5
+      vars:
+         - Jet1SVsAK4_eta
+         - Jet1SVsAK4_phi
+   sv1_features:
+      length: 5
+      vars:
+         - [Jet1SVsAK4_pt_log, 4, 0.6]
+         - [Jet1SVsAK4_mass, 1.2, 0.3]
+         - Jet1SVsAK4_eta
+         - Jet1SVsAK4_phi
+         - [Jet1SVsAK4_abseta, 2, 1.6]
+         - [Jet1SVsAK4_ntracks, 3, 1]
+         - [Jet1SVsAK4_normchi2, 0.8, 0.6]
+         - [Jet1SVsAK4_dxy, 0.4, 0.25]
+         - [Jet1SVsAK4_dxysig, 7, 0.02]
+         - [Jet1SVsAK4_d3d, 0.5, 0.2]
+         - [Jet1SVsAK4_d3dsig, 7, 0.02]
+         - [Jet1SVsAK4_etarel, 0, 10]
+         - [Jet1SVsAK4_phirel, 0, 10]
+         - [Jet1SVsAK4_trk0_pt_log, 4, 0.6]
+         - [Jet1SVsAK4_trk0_etarel, 0, 10]
+         - [Jet1SVsAK4_trk0_phirel, 0, 10]
+         - [Jet1SVsAK4_trk0_pdgId, 0, 0.02]
+         - [Jet1SVsAK4_trk1_pt_log, 4, 0.6]
+         - [Jet1SVsAK4_trk1_etarel, 0, 10]
+         - [Jet1SVsAK4_trk1_phirel, 0, 10]
+         - [Jet1SVsAK4_trk1_pdgId, 0, 0.02]
+         - [Jet1SVsAK4_trk2_pt_log, 4, 0.6]
+         - [Jet1SVsAK4_trk2_etarel, 0, 10]
+         - [Jet1SVsAK4_trk2_phirel, 0, 10]
+         - [Jet1SVsAK4_trk2_pdgId, 0, 0.02]
+         - [Jet1SVsAK4_trk3_pt_log, 4, 0.6]
+         - [Jet1SVsAK4_trk3_etarel, 0, 10]
+         - [Jet1SVsAK4_trk3_phirel, 0, 10]
+         - [Jet1SVsAK4_trk3_pdgId, 0, 0.02]
+         - [Jet1SVsAK4_trk4_pt_log, 4, 0.6]
+         - [Jet1SVsAK4_trk4_etarel, 0, 10]
+         - [Jet1SVsAK4_trk4_phirel, 0, 10]
+         - [Jet1SVsAK4_trk4_pdgId, 0, 0.02]
+   sv1_mask:
+      length: 5
+      vars:
+         - sv1_mask
+   sv2_points:
+      length: 5
+      vars:
+         - Jet2SVsAK4_eta
+         - Jet2SVsAK4_phi
+   sv2_features:
+      length: 5
+      vars:
+         - [Jet2SVsAK4_pt_log, 4, 0.6]
+         - [Jet2SVsAK4_mass, 1.2, 0.3]
+         - Jet2SVsAK4_eta
+         - Jet2SVsAK4_phi
+         - [Jet2SVsAK4_abseta, 2, 1.6]
+         - [Jet2SVsAK4_ntracks, 3, 1]
+         - [Jet2SVsAK4_normchi2, 0.8, 0.6]
+         - [Jet2SVsAK4_dxy, 0.4, 0.25]
+         - [Jet2SVsAK4_dxysig, 7, 0.02]
+         - [Jet2SVsAK4_d3d, 0.5, 0.2]
+         - [Jet2SVsAK4_d3dsig, 7, 0.02]
+         - [Jet2SVsAK4_etarel, 0, 10]
+         - [Jet2SVsAK4_phirel, 0, 10]
+         - [Jet2SVsAK4_trk0_pt_log, 4, 0.6]
+         - [Jet2SVsAK4_trk0_etarel, 0, 10]
+         - [Jet2SVsAK4_trk0_phirel, 0, 10]
+         - [Jet2SVsAK4_trk0_pdgId, 0, 0.02]
+         - [Jet2SVsAK4_trk1_pt_log, 4, 0.6]
+         - [Jet2SVsAK4_trk1_etarel, 0, 10]
+         - [Jet2SVsAK4_trk1_phirel, 0, 10]
+         - [Jet2SVsAK4_trk1_pdgId, 0, 0.02]
+         - [Jet2SVsAK4_trk2_pt_log, 4, 0.6]
+         - [Jet2SVsAK4_trk2_etarel, 0, 10]
+         - [Jet2SVsAK4_trk2_phirel, 0, 10]
+         - [Jet2SVsAK4_trk2_pdgId, 0, 0.02]
+         - [Jet2SVsAK4_trk3_pt_log, 4, 0.6]
+         - [Jet2SVsAK4_trk3_etarel, 0, 10]
+         - [Jet2SVsAK4_trk3_phirel, 0, 10]
+         - [Jet2SVsAK4_trk3_pdgId, 0, 0.02]
+         - [Jet2SVsAK4_trk4_pt_log, 4, 0.6]
+         - [Jet2SVsAK4_trk4_etarel, 0, 10]
+         - [Jet2SVsAK4_trk4_phirel, 0, 10]
+         - [Jet2SVsAK4_trk4_pdgId, 0, 0.02]
+   sv2_mask:
+      length: 5
+      vars:
+         - sv2_mask
+   sv3_points:
+      length: 5
+      vars:
+         - Jet3SVsAK4_eta
+         - Jet3SVsAK4_phi
+   sv3_features:
+      length: 5
+      vars:
+         - [Jet3SVsAK4_pt_log, 4, 0.6]
+         - [Jet3SVsAK4_mass, 1.2, 0.3]
+         - Jet3SVsAK4_eta
+         - Jet3SVsAK4_phi
+         - [Jet3SVsAK4_abseta, 2, 1.6]
+         - [Jet3SVsAK4_ntracks, 3, 1]
+         - [Jet3SVsAK4_normchi2, 0.8, 0.6]
+         - [Jet3SVsAK4_dxy, 0.4, 0.25]
+         - [Jet3SVsAK4_dxysig, 7, 0.02]
+         - [Jet3SVsAK4_d3d, 0.5, 0.2]
+         - [Jet3SVsAK4_d3dsig, 7, 0.02]
+         - [Jet3SVsAK4_etarel, 0, 10]
+         - [Jet3SVsAK4_phirel, 0, 10]
+         - [Jet3SVsAK4_trk0_pt_log, 4, 0.6]
+         - [Jet3SVsAK4_trk0_etarel, 0, 10]
+         - [Jet3SVsAK4_trk0_phirel, 0, 10]
+         - [Jet3SVsAK4_trk0_pdgId, 0, 0.02]
+         - [Jet3SVsAK4_trk1_pt_log, 4, 0.6]
+         - [Jet3SVsAK4_trk1_etarel, 0, 10]
+         - [Jet3SVsAK4_trk1_phirel, 0, 10]
+         - [Jet3SVsAK4_trk1_pdgId, 0, 0.02]
+         - [Jet3SVsAK4_trk2_pt_log, 4, 0.6]
+         - [Jet3SVsAK4_trk2_etarel, 0, 10]
+         - [Jet3SVsAK4_trk2_phirel, 0, 10]
+         - [Jet3SVsAK4_trk2_pdgId, 0, 0.02]
+         - [Jet3SVsAK4_trk3_pt_log, 4, 0.6]
+         - [Jet3SVsAK4_trk3_etarel, 0, 10]
+         - [Jet3SVsAK4_trk3_phirel, 0, 10]
+         - [Jet3SVsAK4_trk3_pdgId, 0, 0.02]
+         - [Jet3SVsAK4_trk4_pt_log, 4, 0.6]
+         - [Jet3SVsAK4_trk4_etarel, 0, 10]
+         - [Jet3SVsAK4_trk4_phirel, 0, 10]
+         - [Jet3SVsAK4_trk4_pdgId, 0, 0.02]
+   sv3_mask:
+      length: 5
+      vars:
+         - sv3_mask
+
+labels:
+   ### type can be `simple`, `custom`
+   ### [option 1] use `simple` for binary/multi-class classification, then `value` is a list of 0-1 labels
+   type: simple
+   value: [
+      is_ll, isnot_ll
+      ]
+   ### [option 2] otherwise use `custom` to define the label, then `value` is a map
+   # type: custom
+   # value: 
+      # target_mass: np.where(fj_isQCD, fj_genjet_sdmass, fj_gen_mass) 
+
+observers:
+   - run
+   - luminosityBlock
+   - event
+   - is_ll
+   - is_tl
+   - is_tt
+   - event_no
+
+treename: deepntuplizer/tree
