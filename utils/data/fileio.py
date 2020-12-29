@@ -19,7 +19,7 @@ def _read_hdf5(filepath, branches, load_range=None):
 
 
 def _read_root(filepath, branches, load_range=None, treename=None):
-    import uproot
+    import uproot3 as uproot
     with uproot.open(filepath) as f:
         if treename is None:
             treenames = set([k.decode('utf-8').split(';')[0] for k, v in f.allitems() if getattr(v, 'classname', '') == 'TTree'])
@@ -38,7 +38,7 @@ def _read_root(filepath, branches, load_range=None, treename=None):
 
 
 def _read_awkd(filepath, branches, load_range=None):
-    import awkward
+    import awkward0 as awkward
     with awkward.load(filepath) as f:
         outputs = {k:f[k] for k in branches}
     if load_range is not None:
@@ -81,7 +81,7 @@ def _read_files(filelist, branches, load_range=None, show_progressbar=False, **k
 
 
 def _write_root(file, table, treename='Events', compression=-1, step=1048576):
-    import uproot
+    import uproot3 as uproot
     if compression == -1:
         compression = uproot.write.compress.LZ4(4)
     with uproot.recreate(file, compression=compression) as fout:
