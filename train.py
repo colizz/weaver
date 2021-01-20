@@ -262,7 +262,7 @@ def save_awk(scores, labels, observers):
     :param observers:
     :return:
     """
-    import awkward
+    import awkward0 as awkward
     output = {'scores': scores}
     output.update(labels)
     output.update(observers)
